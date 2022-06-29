@@ -28,47 +28,67 @@ const images = [
     },
 ];
 
+// counter
 let activeElement = 0;
 
+// carousel parent 
 const imgPresent = document.getElementById('img-list');
+
+// thumbnails parent 
 const imgThumbnails = document.getElementById('thumbnails-list')
 
 
 for (let i = 0; i < images.length; i++) {
     console.log(images[i].url)
 
+    // carousel parent representation
     imgPresent.innerHTML += `<img class="w-100 d-none" src=${images[i].url} alt="img ${images[i].title}" >
     <div class="position-absolute text-white top-0 end-0 text-end p-2 d-none carousel-description">
         <h1>${images[i].title}</h1>
         <p class=""><em>${images[i].description}</em></p>
     </div>`
+
+    // thumbnails parent representation
     imgThumbnails.innerHTML += `<img class="opacity-50" src=${images[i].url} alt="img ${images[i].title}" >`
 
 }
 
-
+// Next Button
 const btnNext = document.getElementById('btn-next');
+
+// Previus Button
 const btnPrev = document.getElementById('btn-prev');
+
+// Play Button
+const btnPlay = document.getElementById('button-play')
+
+// Play Button initialisation
+btnPlay.innerHTML = `<i class="fa-solid fa-circle-play">`
+
+// All images in img-list
 const pictureElement = document.querySelectorAll('#img-list img');
+
+// All images in thumbnails-list
 const thumbnailsElement = document.querySelectorAll('#thumbnails-list img')
+
+// All description in img-list
 const imgDescElement = document.querySelectorAll('#img-list .carousel-description')
 
+// I modify the classes in the first element img in img-list
 pictureElement[activeElement].classList.remove('d-none')
 pictureElement[activeElement].classList.add('d-block')
 
+// I modify the classes in the first element desc in img-list
 imgDescElement[activeElement].classList.remove('d-none')
 imgDescElement[activeElement].classList.add('d-block')
 
+// I modify the classes in the first element img in thumbnails-list
 thumbnailsElement[activeElement].classList.remove('opacity-50')
 
-console.log(imgDescElement.length)
+// Click event in Next Button 
+btnNext.addEventListener('click', function () {
 
-btnNext.addEventListener('click', function() {
-    pictureElement[activeElement].classList.remove('d-block')
-    pictureElement[activeElement].classList.add('d-none')
-    thumbnailsElement[activeElement].classList.add('opacity-50')
-    imgDescElement[activeElement].classList.remove('d-block')
-    imgDescElement[activeElement].classList.add('d-none')
+    modifyBefore(pictureElement, thumbnailsElement, imgDescElement, activeElement)
 
     activeElement++;
 
@@ -76,19 +96,16 @@ btnNext.addEventListener('click', function() {
         activeElement = 0;
     }
 
-    pictureElement[activeElement].classList.add('d-block')
-    pictureElement[activeElement].classList.remove('d-none')
-    thumbnailsElement[activeElement].classList.remove('opacity-50')
-    imgDescElement[activeElement].classList.add('d-none')
-    imgDescElement[activeElement].classList.remove('d-none')
+    modifyAfter(pictureElement, thumbnailsElement, imgDescElement, activeElement)
 
 })
 
-btnPrev.addEventListener('click', function(){
 
-    pictureElement[activeElement].classList.remove('d-block')
-    pictureElement[activeElement].classList.add('d-none')
-    thumbnailsElement[activeElement].classList.add('opacity-50')
+// Click event in Previus Button 
+btnPrev.addEventListener('click', function () {
+
+    modifyBefore(pictureElement, thumbnailsElement, imgDescElement, activeElement)
+
 
     activeElement--;
 
@@ -96,11 +113,75 @@ btnPrev.addEventListener('click', function(){
         activeElement = pictureElement.length - 1;
     }
 
-    pictureElement[activeElement].classList.add('d-block')
-    pictureElement[activeElement].classList.remove('d-none')
-    thumbnailsElement[activeElement].classList.remove('opacity-50')
+    modifyAfter(pictureElement, thumbnailsElement, imgDescElement, activeElement)
+
 
 })
+
+let isPlay = false;
+let clock;
+
+
+btnPlay.addEventListener('click', function () {
+
+    console.log('click' + isPlay)
+
+    if (!isPlay) {
+        btnPlay.innerHTML = `<i class="fa-solid fa-circle-pause"></i>`
+
+        // Timer Start
+        clock = setInterval(() => {
+
+            modifyBefore(pictureElement, thumbnailsElement, imgDescElement, activeElement)
+
+            activeElement++;
+
+            if (activeElement === pictureElement.length) {
+                activeElement = 0;
+            }
+
+            modifyAfter(pictureElement, thumbnailsElement, imgDescElement, activeElement)
+
+        }, 2000);
+
+        isPlay = true
+
+    } else {
+
+        btnPlay.innerHTML = `<i class="fa-solid fa-circle-play">`
+        isPlay = false
+        clearInterval(clock);
+        console.log('stop')
+    }
+
+
+})
+
+
+
+function modifyBefore(arrayimg, arrayThumbnailsImg, arrayDecImg, contator) {
+
+    // I modify the classe :before
+    arrayimg[contator].classList.remove('d-block')
+    arrayimg[contator].classList.add('d-none')
+    arrayThumbnailsImg[contator].classList.add('opacity-50')
+    arrayDecImg[contator].classList.remove('d-block')
+    arrayDecImg[contator].classList.add('d-none')
+
+}
+
+function modifyAfter(arrayimg, arrayThumbnailsImg, arrayDecImg, contator) {
+
+    // I modify the classe :after
+    arrayimg[contator].classList.add('d-block')
+    arrayimg[contator].classList.remove('d-none')
+    arrayThumbnailsImg[contator].classList.remove('opacity-50')
+    arrayDecImg[contator].classList.add('d-none')
+    arrayDecImg[contator].classList.remove('d-none')
+
+}
+
+
 
 
 

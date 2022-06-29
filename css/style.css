@@ -23,4 +23,16 @@
     width: 187px;
 }
 
+#button-play{
+    font-size: 3rem;
+    border: 0;
+    background-color: transparent;
+    
+}
+
+#button-play :hover{
+    transform: scale(1.10);
+    transition: 0.3s;
+}
+
 
