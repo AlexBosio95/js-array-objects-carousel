@@ -139,7 +139,7 @@ btnPlay.addEventListener('click', function () {
 
             modifyAfter(pictureElements, thumbnailsElements, imgDescElements, activeElement)
 
-        }, 2000);
+        }, 3000);
 
         isPlay = true
 
