@@ -31,28 +31,44 @@ const images = [
 let activeElement = 0;
 
 const imgPresent = document.getElementById('img-list');
+const imgThumbnails = document.getElementById('thumbnails-list')
+
 
 for (let i = 0; i < images.length; i++) {
     console.log(images[i].url)
 
-    imgPresent.innerHTML += `<img class="w-100 d-none" src=${images[i].url} alt="img ${images[i].title}" >`
+    imgPresent.innerHTML += `<img class="w-100 d-none" src=${images[i].url} alt="img ${images[i].title}" >
+    <div class="position-absolute text-white top-0 end-0 text-end p-2 d-none carousel-description">
+        <h1>${images[i].title}</h1>
+        <p class=""><em>${images[i].description}</em></p>
+    </div>`
+    imgThumbnails.innerHTML += `<img class="opacity-50" src=${images[i].url} alt="img ${images[i].title}" >`
 
 }
 
 
-
 const btnNext = document.getElementById('btn-next');
-const btnPrev = document.getElementById('btn-prev')
+const btnPrev = document.getElementById('btn-prev');
 const pictureElement = document.querySelectorAll('#img-list img');
+const thumbnailsElement = document.querySelectorAll('#thumbnails-list img')
+const imgDescElement = document.querySelectorAll('#img-list .carousel-description')
 
 pictureElement[activeElement].classList.remove('d-none')
 pictureElement[activeElement].classList.add('d-block')
 
-console.log(pictureElement.length)
+imgDescElement[activeElement].classList.remove('d-none')
+imgDescElement[activeElement].classList.add('d-block')
+
+thumbnailsElement[activeElement].classList.remove('opacity-50')
+
+console.log(imgDescElement.length)
 
 btnNext.addEventListener('click', function() {
     pictureElement[activeElement].classList.remove('d-block')
     pictureElement[activeElement].classList.add('d-none')
+    thumbnailsElement[activeElement].classList.add('opacity-50')
+    imgDescElement[activeElement].classList.remove('d-block')
+    imgDescElement[activeElement].classList.add('d-none')
 
     activeElement++;
 
@@ -62,6 +78,9 @@ btnNext.addEventListener('click', function() {
 
     pictureElement[activeElement].classList.add('d-block')
     pictureElement[activeElement].classList.remove('d-none')
+    thumbnailsElement[activeElement].classList.remove('opacity-50')
+    imgDescElement[activeElement].classList.add('d-none')
+    imgDescElement[activeElement].classList.remove('d-none')
 
 })
 
@@ -69,6 +88,7 @@ btnPrev.addEventListener('click', function(){
 
     pictureElement[activeElement].classList.remove('d-block')
     pictureElement[activeElement].classList.add('d-none')
+    thumbnailsElement[activeElement].classList.add('opacity-50')
 
     activeElement--;
 
@@ -78,6 +98,7 @@ btnPrev.addEventListener('click', function(){
 
     pictureElement[activeElement].classList.add('d-block')
     pictureElement[activeElement].classList.remove('d-none')
+    thumbnailsElement[activeElement].classList.remove('opacity-50')
 
 })
 
